@@ -1,4 +1,4 @@
-s = {
+const s = {
   queryCost: 24,
   latitude: 28.6341,
   longitude: 77.2169,
@@ -767,3 +767,60 @@ s = {
     },
   },
 };
+
+function getFormattedDate() {
+  const date = new Date();
+
+  const year = date.getFullYear();
+  let month = date.getMonth();
+  let day = date.getDate();
+
+  if (month < 10) month = "0" + month;
+  if (day < 10) day = "0" + day;
+
+  const formattedDate = year + "-" + month + "-" + day;
+  return formattedDate;
+}
+
+async function getWeatherDetails(location) {
+  const apiKey = "BJCPFH9PN5H9AYVG9BKMZ34WH";
+  const endPoint = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/
+                      ${location}/${getFormattedDate()}?key=${apiKey}`;
+
+  try {
+    const response = await fetch(endPoint);
+    // console.log(response);
+    const json_response = await response.json();
+    // console.log(json_response);
+    return json_response;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export async function processData(location = "Delhi") {
+  // const rawData = await getWeatherDetails(location)
+  const rawData = s;
+
+  let area = rawData["resolvedAddress"].split(",");
+  area = area[0] + "," + area.at(-1);
+  console.log(area);
+
+  console.log(new Date().toLocaleString());
+
+  const data = rawData["days"][0];
+  const temp = data["temp"];
+  console.log(temp);
+
+  const condition = data["conditions"];
+  console.log(condition);
+
+  const feelsLike = data["feelslike"];
+  console.log(feelsLike);
+
+  const humidity = data["humidity"] + "%";
+  console.log(humidity);
+
+  const windspeed = data["windspeed"] + "km/hr";
+  console.log(windspeed);
+}
