@@ -823,4 +823,6 @@ export async function processData(location = "Delhi") {
 
   const windspeed = data["windspeed"] + "km/hr";
   console.log(windspeed);
+
+  return { area, temp, condition, feelsLike, humidity, windspeed };
 }
