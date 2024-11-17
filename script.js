@@ -1,7 +1,3 @@
-import { processData } from "./data.js";
-
-let data = await processData("London");
-
 export function createLeftSection() {
   const leftSection = document.createElement("div");
   leftSection.className = "left-section";
@@ -20,6 +16,7 @@ export function createLeftSection() {
   leftSection.appendChild(locationIcon);
 
   const inputElement = document.createElement("input");
+  inputElement.setAttribute("id", "location-input");
   inputElement.placeholder = "Enter City";
 
   const searchIcon = document.createElement("i");
@@ -52,7 +49,7 @@ export function createLeftSection() {
   return leftSection;
 }
 
-export function createRightSection() {
+export function createRightSection(data) {
   const rightSection = document.createElement("div");
   rightSection.className = "right-section";
 
@@ -108,7 +105,6 @@ function fahrenheitToCelcius(tempInFahrenheit) {
 
 export function tempConverter() {
   let toggleChecked = document.querySelector("#toggle");
-  console.log(toggleChecked);
 
   toggleChecked.addEventListener("change", () => {
     if (toggleChecked.checked) {
