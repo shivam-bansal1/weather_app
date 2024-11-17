@@ -60,6 +60,19 @@ input {
   cursor: pointer;
 }
 
+.search-button {
+  margin-left: 2px;
+  padding: 6px 8px;
+  border: none;
+  border-radius: 6px;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.search-button:hover {
+  background-color: #b1b1b1;
+}
+
 /* Temperature Toggle */
 
 .switch {

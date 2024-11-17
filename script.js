@@ -1,6 +1,6 @@
 import { processData } from "./data.js";
 
-let data = await processData();
+let data = await processData("London");
 
 export function createLeftSection() {
   const leftSection = document.createElement("div");
@@ -21,7 +21,18 @@ export function createLeftSection() {
 
   const inputElement = document.createElement("input");
   inputElement.placeholder = "Enter City";
-  leftSection.appendChild(inputElement);
+
+  const searchIcon = document.createElement("i");
+  searchIcon.classList.add("fa-solid", "fa-magnifying-glass");
+
+  const searchButton = document.createElement("button");
+  searchButton.className = "search-button";
+  searchButton.appendChild(searchIcon);
+
+  const inputField = document.createElement("div");
+  inputField.appendChild(inputElement);
+  inputField.appendChild(searchButton);
+  leftSection.appendChild(inputField);
 
   const tempInput = document.createElement("input");
   tempInput.type = "checkbox";
@@ -54,7 +65,8 @@ export function createRightSection() {
   rightSection.appendChild(dateTime);
 
   const temperature = document.createElement("h1");
-  temperature.textContent = data.temp;
+  temperature.className = "temperature";
+  temperature.textContent = data.temp + "°C";
   rightSection.appendChild(temperature);
 
   const conditions = document.createElement("h2");
@@ -62,7 +74,9 @@ export function createRightSection() {
   rightSection.appendChild(conditions);
 
   const feelsLike = document.createElement("h3");
-  feelsLike.textContent = "Feels like: " + data.feelsLike;
+  feelsLike.className = "feels-like-temp";
+  feelsLike.textContent = "Feels like: " + data.feelsLike + "°C";
+
   const humidity = document.createElement("h3");
   humidity.textContent = "Humidity: " + data.humidity;
 
@@ -76,4 +90,49 @@ export function createRightSection() {
   rightSection.appendChild(windSpeed);
 
   return rightSection;
+}
+
+function celciusToFahrenheit(tempInCelcius) {
+  tempInCelcius = tempInCelcius.slice(0, -2);
+  let tempInFahrenheit = (tempInCelcius * 9) / 5 + 32;
+  tempInFahrenheit = Math.round(tempInFahrenheit * 100) / 100;
+  return tempInFahrenheit;
+}
+
+function fahrenheitToCelcius(tempInFahrenheit) {
+  tempInFahrenheit = tempInFahrenheit.slice(0, -2);
+  let tempInCelcius = ((tempInFahrenheit - 32) * 5) / 9;
+  tempInCelcius = Math.round(tempInCelcius * 100) / 100;
+  return tempInCelcius;
+}
+
+export function tempConverter() {
+  let toggleChecked = document.querySelector("#toggle");
+  console.log(toggleChecked);
+
+  toggleChecked.addEventListener("change", () => {
+    if (toggleChecked.checked) {
+      const tempElement = document.querySelector(".temperature");
+      let tempInCelcius = tempElement.textContent;
+      let tempInFahrenheit = celciusToFahrenheit(tempInCelcius);
+      tempElement.textContent = tempInFahrenheit + "°F";
+
+      const feelsLikeElement = document.querySelector(".feels-like-temp");
+      tempInCelcius = feelsLikeElement.textContent;
+      tempInCelcius = tempInCelcius.split(":")[1].replace(/ /g, "");
+      tempInFahrenheit = celciusToFahrenheit(tempInCelcius);
+      feelsLikeElement.textContent = "Feels like: " + tempInFahrenheit + "°F";
+    } else {
+      const tempElement = document.querySelector(".temperature");
+      let tempInFahrenheit = tempElement.textContent;
+      let tempInCelcius = fahrenheitToCelcius(tempInFahrenheit);
+      tempElement.textContent = tempInCelcius + "°C";
+
+      const feelsLikeElement = document.querySelector(".feels-like-temp");
+      tempInFahrenheit = feelsLikeElement.textContent;
+      tempInFahrenheit = tempInFahrenheit.split(":")[1].replace(/ /g, "");
+      tempInCelcius = fahrenheitToCelcius(tempInFahrenheit);
+      feelsLikeElement.textContent = "Feels like: " + tempInCelcius + "°C";
+    }
+  });
 }

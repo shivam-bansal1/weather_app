@@ -789,9 +789,7 @@ async function getWeatherDetails(location) {
 
   try {
     const response = await fetch(endPoint);
-    // console.log(response);
     const json_response = await response.json();
-    // console.log(json_response);
     return json_response;
   } catch (err) {
     console.log(err);
@@ -799,7 +797,7 @@ async function getWeatherDetails(location) {
 }
 
 export async function processData(location = "Delhi") {
-  // const rawData = await getWeatherDetails(location)
+  // const rawData = await getWeatherDetails(location);
   const rawData = s;
 
   let area = rawData["resolvedAddress"].split(",");
